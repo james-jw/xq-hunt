@@ -14,12 +14,12 @@ Library for indexing directories of documents for quick windowed searching. Targ
 
 If recursively more than 1000 files are containined within the folder to be indexed, additional calls will need to be made with incrememnting page indexes. See the wizard.bat for an example of how this is accomplished easily.  <br />
 
-5) Now optimize the database: <code>db:optimize('demo-hunt')</code>  <br />
-6) Index the trigrams themselves:  <br />
+4c) Now optimize the database: <code>db:optimize('demo-hunt')</code>  <br />
+4d) Index the trigrams themselves:  <br />
 <pre>
 import module namespace xq-hunt = 'xq-hunt' at 'src/xq-hunt.xqm';
 xq-hunt:database('demo-hunt')</pre> <br />
-7) Now optimize the database one more time: <code>db:optimize('demo-hunt')</code>  <br />
+4e) Now optimize the database one more time: <code>db:optimize('demo-hunt')</code>  <br />
 
 8) Complete! Your directory is now indexed and ready to search!
 
