@@ -2,13 +2,15 @@
 Library for indexing directories of documents for quick windowed searching. Targets <a href="http://basex.org/">BaseX</a>
 
 <h2>How it works</h2>
-Hunt is a simple module. It creates a trigram index for each text file found in the directory. When an index is created a trigram size can be selected. For clarification, a trigram is <code>any group of consecutive written units such as letters, syllables or words.</code>. 
+Hunt is a simple module. It creates a trigram index for each text file found in the directory. When an index is created a trigram size can be selected. For clarification, a trigram in our case is <code>any group of consecutive written units such as letters.</code>. 
 
 Different trigram lengths are useful for different data sets. The examples here us a trigram length of size 3; however, any positive length is valid including multiple lengths: (3, 7).
 
-When a document is indexed, its contents are broken up into individual trigrams of the length provided and stored in a database document. Each unique trigram found is stored.
+When a document is indexed, its contents are broken up into individual trigrams of the length provided and each unique trigram found is stored in the documents index.
 
-When a search is performed, the same process is applied to the input search text. The resulting trigrams are then matched against the document trigrams stored during the indexing process, matching any file index which contains them all. 
+After all documents have been indexed, a second process indexes the trigrams themselves, deteremining their relevancy. The formula is simply the total number of indexed documents divided by the number of documents the trigram occurs in. For example a relevancy of .5 would represent a trigram that is found in 50% of the documents indexed and thus is NOT very useful. The lower the number the more useful the trigram is. 
+
+When a search is performed, the same process is applied to the input search text. The resulting trigrams are then ordered by relevancy and top 4 relevant trigrams are matched against the document trigrams stored during the indexing process, matching any file index which contains them all. 
 
 The file path returned from the index is then used to search line by line for the queried pattern. (Its important to note that when searching, the trigram length must be specified and match that of available indexes on the database being searched.)
 
