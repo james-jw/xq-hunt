@@ -1,6 +1,21 @@
 # xq-hunt
 Library for indexing directories of documents for quick windowed searching. Targets <a href="http://basex.org/">BaseX</a>
 
+<h2>How it works</h2>
+Hunt is a simple module. It creates a trigram index for each text file found in the directory. When an index is created a trigram size can be selected. For clarification, a trigram is <code>any group of consecutive written units such as letters, syllables or words.</code>. 
+
+Different trigram lengths are useful for different data sets. The examples here us a trigram length of size 3; however, any positive length is valid including multiple lengths: (3, 7).
+
+When a document is indexed, its contents are broken up into individual trigrams of the length provided and stored in a database document. 
+
+When a search is performed, the same process is applied to the input text, resulting in a set of trigrams. These trigrams are then searched against the database indexes, matching any index which contains all of them. The result of this search is merely the index itself which contains the file path and a full set of trigrams found withing the file. 
+
+The file path returned from the index can be used to search line by line for the queried pattern. (Its important to note that when searching, the trigram length must be specified and match that of available indexes on the database being searched.)
+
+<h3>Use Cases</h3>
+Useful for provding quick searches accross code base directories, data sets, apis or other data files
+Coupled with RESTXQ, allows for powerful service configurations
+
 <h2>Usage</h2>
 <h3>Indexing</h3>
 
