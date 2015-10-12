@@ -42,7 +42,7 @@ For example to return all lines from any index returned by hunt-db you could sim
 
 <b>Note</b> the 0 in hunt-file. This simply returns a zero length window which represents the line by itself. <br />
 
-Fortunately, hund-db has an overload which does this for you. You can simply add the window size to hunt-db to return windowed results. The following query would return a set of windows of size 10 for each match in the directory. <br />
+Fortunately, the <code>hunt-db</code> method has an overload which does this for you. Simply add the window size as the last paramter to <code>hunt-db</code> in order to return windowed results. The following query would return a set of windows of size 10 for each match in the directory. <br />
 
 <code>xq-hunt:hunt-db('demo-hunt', 'Hunting is fun!', 3, 10)</code> <br />
 
