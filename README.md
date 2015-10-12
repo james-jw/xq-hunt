@@ -21,7 +21,7 @@ import module namespace xq-hunt = 'xq-hunt' at 'src/xq-hunt.xqm';
 xq-hunt:database('demo-hunt')</pre> <br />
 4e) Now optimize the database one more time: <code>db:optimize('demo-hunt')</code>  <br />
 
-8) Complete! Your directory is now indexed and ready to search!
+5) Complete! Your directory is now indexed and ready to search!
 
 <h3>Searching</h3>
 
