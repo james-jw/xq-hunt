@@ -2,7 +2,7 @@
 Library for indexing directories of documents for quick windowed searching. Targets <a href="http://basex.org/">BaseX</a>
 
 <h2>How it works</h2>
-Hunt is a simple module. It creates a trigram index for each text file found in the directory. When an index is created a trigram size can be selected. For clarification, a trigram in our case is <code>any group of consecutive written units such as letters.</code>. 
+Hunt is a simple module. It creates a trigram index for each text file found in the directory. When an index is created a trigram size can be selected. For clarification, a trigram in our case is <code>any group of consecutive written letters.</code>. 
 
 Different trigram lengths are useful for different data sets. The examples here us a trigram length of size 3; however, any positive length is valid including multiple lengths: (3, 7).
 
