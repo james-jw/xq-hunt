@@ -1,7 +1,10 @@
 # xq-hunt
 Library for indexing directories of documents for quick windowed searching. Targets <a href="http://basex.org/">BaseX</a>
 
-<h3>Usage</h3>
+<h2>Usage</h2>
+<h3>Indexing</h3>
+
+The below steps outline how to index a directory for future searching: <br />
 
 1) Ensure you have basex installed and in your path <br />
 2) Clone this repository to your machine <br />
