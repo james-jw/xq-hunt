@@ -12,7 +12,7 @@ After all documents have been indexed, a second process indexes the trigrams the
 
 When a search is performed, the same process is applied to the input search text. The resulting trigrams are then ordered by relevancy and top 4 relevant trigrams are matched against the document trigrams stored during the indexing process, matching any file index which contains them all. 
 
-The file path returned from the index is then used to search line by line for the queried pattern. (Its important to note that when searching, the trigram length must be specified and match that of available indexes on the database being searched.)
+The file path returned from the index is then used to search line by line for the queried pattern. (Its important to note that when searching, the trigram length must be specified and match that of available indexes on the database being searched. For example, if you index using trigrams of size 4, you must also search with trigrams of size 4.)
 
 <h3>Use Cases</h3>
 Useful for provding quick searches accross code base directories, data sets, apis or other data files.
