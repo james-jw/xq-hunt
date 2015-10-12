@@ -6,15 +6,14 @@ Hunt is a simple module. It creates a trigram index for each text file found in 
 
 Different trigram lengths are useful for different data sets. The examples here us a trigram length of size 3; however, any positive length is valid including multiple lengths: (3, 7).
 
-When a document is indexed, its contents are broken up into individual trigrams of the length provided and stored in a database document. 
+When a document is indexed, its contents are broken up into individual trigrams of the length provided and stored in a database document. Each unique trigram found is stored.
 
-When a search is performed, the same process is applied to the input text, resulting in a set of trigrams. These trigrams are then searched against the database indexes, matching any index which contains all of them. The result of this search is merely the index itself which contains the file path and a full set of trigrams found withing the file. 
+When a search is performed, the same process is applied to the input search text. The resulting trigrams are then matched against the document trigrams stored during the indexing process, matching any file index which contains them all. 
 
-The file path returned from the index can be used to search line by line for the queried pattern. (Its important to note that when searching, the trigram length must be specified and match that of available indexes on the database being searched.)
+The file path returned from the index is then used to search line by line for the queried pattern. (Its important to note that when searching, the trigram length must be specified and match that of available indexes on the database being searched.)
 
 <h3>Use Cases</h3>
-Useful for provding quick searches accross code base directories, data sets, apis or other data files
-Coupled with RESTXQ, allows for powerful service configurations
+Useful for provding quick searches accross code base directories, data sets, apis or other data files.
 
 <h2>Usage</h2>
 <h3>Indexing</h3>
@@ -30,7 +29,7 @@ The below steps outline how to index a directory for future searching: <br />
 4b) Call xq-hunt:directory to index a directory. The following call will index the first 1000 files (page 0) of the "c:\demo"  folder into the 'demo-hunt' database using a trigram size of 3, skipping all file paths matching the regex '[.]svn' <br />
   <code>xq-hunt:directory(c:\demo', 'demo-hunt', '[.]svn', 0, 3)</code>  <br /> 
 
-If recursively more than 1000 files are containined within the folder to be indexed, additional calls will need to be made with incrememnting page indexes. See the wizard.bat for an example of how this is accomplished easily.  <br />
+If recursively more than 1000 files are containined within the folder to be indexed, additional calls will need to be made with incrementing page indexes. See the wizard.bat for an example of how this is accomplished easily.  <br />
 
 4c) Now optimize the database: <code>db:optimize('demo-hunt')</code>  <br />
 4d) Index the trigrams themselves:  <br />
