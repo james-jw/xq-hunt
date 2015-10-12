@@ -41,7 +41,7 @@ The above query would return all the index nodes matching the trigram vector of 
 To return the actual lines containing the phrase. Call <code>hunt-file</code> pasing in the index provided from hunt-db call above, plus the phrase itself and lastly a windows size of 0. <br />
 
 For example to return all lines from any index returned by hunt-db you could simply use the xquery map operator: <br />
-<code>xq:hunt:hunt-db('demo-hunt', $phrase, 3) ! xq-hunt:hunt-file(., $phrase, 0)</code> <br />
+<code>xq-hunt:hunt-db('demo-hunt', $phrase, 3) ! xq-hunt:hunt-file(., $phrase, 0)</code> <br />
 
 <b>Note</b> the 0 in hunt-file. This simply returns a zero length window which represents the line by itself. <br />
 
