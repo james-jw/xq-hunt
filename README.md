@@ -25,19 +25,29 @@ xq-hunt:database('demo-hunt')</pre> <br />
 
 <h3>Searching</h3>
 
-The 'xq-hunt' module includes one method with two overloads to utilize the newly created index. The method is <code>hunt</code>
-For example, to search for all files that likely contain the phrase 'Hunting is fun!' you could simply call
+The 'xq-hunt' module includes two methods with overloads to utilize the newly created index. The methods are <code>hunt-file</code> and <code>hund-db</code>
+
+For example, to search for all files that likely contain the phrase 'Hunting is fun!' in your entire directory (recursively) you could simply call
 
 <pre>import module namespace xq-hunt = 'xq-hunt' at 'src/xq-hunt.xqm'; 
-xq-hunt:hunt('demo-hunt', 'Hunting is fun!', 3)
+xq-hunt:hunt-db('demo-hunt', 'Hunting is fun!', 3)
 </pre>
 
 The above query would return all the index nodes matching the trigram vector of the input phrase.This does not gurrantee the phrase is in the file referenced by the index, only that it likley could be. <br />
 
-Last but not least, xq-hunt allows for windowed searches. Simply add the window size as an additional paramter.
-<code>xq-hunt:hunt('demo-hunt', 'Hunting is fun!', 3, 10)</code> <br />
+To return the actual lines containing the phrase. Call <code>hunt-file</code> pasing in the index provided from hunt-db call above, plus the phrase itself and lastly a windows size of 0. <br />
 
-The above query would return a window of size 10 for each instance of the complete phrase.
+For example to return all lines from any index returned by hunt-db you could simply use the xquery map operator: <br />
+<code>xq:hunt:hunt-db('demo-hunt', $phrase, 3) ! xq-hunt:hunt-file(., $phrase, 0)</code> <br />
+
+<b>Note</b> the 0 in hunt-file. This simply returns a zero length window which represents the line by itself. <br />
+
+Fortunately, hund-db has an overload which does this for you. You can simply add the window size to hunt-db to return windowed results. The following query would return a set of windows of size 10 for each match in the directory. <br />
+
+<code>xq-hunt:hunt-db('demo-hunt', 'Hunting is fun!', 3, 10)</code> <br />
+
+Happy hunting!
+
 
 
 
