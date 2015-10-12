@@ -28,7 +28,7 @@ xq-hunt:database('demo-hunt')</pre> <br />
 
 <h3>Searching</h3>
 
-The 'xq-hunt' module includes two methods with overloads to utilize the newly created index. The methods are <code>hunt-file</code> and <code>hund-db</code>
+The 'xq-hunt' module includes two methods with overloads to utilize the newly created index. The methods are <code>hunt-file</code> and <code>hunt-db</code>
 
 For example, to search for all files that likely contain the phrase 'Hunting is fun!' in your entire directory (recursively) you could simply call
 
