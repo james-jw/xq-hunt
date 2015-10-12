@@ -29,13 +29,13 @@ The 'xq-hunt' module includes one method with two overloads to utilize the newly
 For example, to search for all files that likely contain the phrase 'Hunting is fun!' you could simply call
 
 <pre>import module namespace xq-hunt = 'xq-hunt' at 'src/xq-hunt.xqm'; 
-xq:hunt('demo-hunt', 'Hunting is fun!', 3)
+xq-hunt:hunt('demo-hunt', 'Hunting is fun!', 3)
 </pre>
 
 The above query would return all the index nodes matching the trigram vector of the input phrase.This does not gurrantee the phrase is in the file referenced by the index, only that it likley could be. <br />
 
 Last but not least, xq-hunt allows for windowed searches. Simply add the window size as an additional paramter.
-<code>xq:hunt('demo-hunt', 'Hunting is fun!', 3, 10)</code> <br />
+<code>xq-hunt:hunt('demo-hunt', 'Hunting is fun!', 3, 10)</code> <br />
 
 The above query would return a window of size 10 for each instance of the complete phrase.
 
