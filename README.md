@@ -32,7 +32,7 @@ For example, to search for all files that likely contain the phrase 'Hunting is 
 xq:hunt('demo-hunt', 'Hunting is fun!', 3)
 </pre>
 
-The above query would return all the index nodes matching the trigram vector of the input phrase.This does not gurrantee the phrase is in the file, only that it likley could be. <br />
+The above query would return all the index nodes matching the trigram vector of the input phrase.This does not gurrantee the phrase is in the file referenced by the index, only that it likley could be. <br />
 
 Last but not least, xq-hunt allows for windowed searches. Simply add the window size as an additional paramter.
 <code>xq:hunt('demo-hunt', 'Hunting is fun!', 3, 10)</code> <br />
