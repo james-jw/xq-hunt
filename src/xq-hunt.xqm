@@ -5,7 +5,7 @@
 :)
 module namespace index = 'xq-hunt';
 
-declare function index:to-search-vector($terms as xs:string*, $sizes as xs:integer*) as xs:string* {
+declare function index:to-hunt-vector($terms as xs:string*, $sizes as xs:integer*) as xs:string* {
   for $size in $sizes return
     distinct-values(
       for $term in $terms return
@@ -18,8 +18,8 @@ declare function index:to-search-vector($terms as xs:string*, $sizes as xs:integ
 };
 
 (: Provided a string term, returns a search vector consisting of trigrams :)
-declare function index:to-search-vector($terms as xs:string*) as xs:string* {
-  index:to-search-vector($terms, 3)
+declare function index:to-hunt-vector($terms as xs:string*) as xs:string* {
+  index:to-hunt-vector($terms, 3)
 };
 
 (: Utility function to escape a string for use with a regular expression :)
@@ -57,7 +57,7 @@ declare updating function index:directory($sourceIn as xs:string, $db as xs:stri
     return
       try {
         let $doc := index:lines-from-file(trace($sourceIn || $file)) return
-        let $trigrams := index:to-search-vector($doc, $sizes) return
+        let $trigrams := index:to-hunt-vector($doc, $sizes) return
           <index file="{$sourceIn || $file}">
             {$trigrams ! <tri-grm>{.}</tri-grm>}
           </index>
@@ -98,9 +98,9 @@ declare updating function index:database($dbname) {
 (: Provided a database name and search term returns a set of indexes matching the term
    This requires tri-grm indexes exist on the database.
 :)
-declare function index:hunt($db as xs:string, $term as xs:string, $size as xs:integer*) as node()* {
+declare function index:hunt-db($db as xs:string, $term as xs:string, $size as xs:integer*) as node()* {
   let $db := db:open($db)
-  let $search := index:to-search-vector($term, $size)
+  let $search := index:to-hunt-vector($term, $size)
   let $vector := 
    (for $v in $db/relevance[./@tri-grm = $search]
     order by $v 
@@ -118,7 +118,7 @@ declare function index:hunt($db as xs:string, $term as xs:string, $size as xs:in
 (: Provided an database index element, term and window size. Returns a set of text windows of the provided size
    containing the term
 :)
-declare function index:search-file($index as node(), $term as xs:string, $window-size as xs:integer) as node()* {
+declare function index:hunt-file($index as node(), $term as xs:string, $window-size as xs:integer) as node()* {
   let $text := index:lines-from-file($index/@file)
   let $lines := for tumbling window $w in $text
        start $s at $spos when lower-case($s) => contains(lower-case($term))
@@ -139,7 +139,7 @@ declare function index:search-file($index as node(), $term as xs:string, $window
    into the database. This requires index:directory and index:database have been run on the provided database name
    and thus a trigram indexes already exists on the database. 
 :)
-declare function index:hunt($db-name as xs:string, $term as xs:string, $size as xs:integer*, $window-size as xs:integer) as node()* {
-  (index:hunt($db-name, $term, $size) ! index:search-file(., $term, $window-size))[position() = (1 to 5) ]
+declare function index:hunt-db($db-name as xs:string, $term as xs:string, $size as xs:integer*, $window-size as xs:integer) as node()* {
+  (index:hunt-db($db-name, $term, $size) ! index:hunt-file(., $term, $window-size))[position() = (1 to 5) ]
 };
 
