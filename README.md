@@ -19,6 +19,7 @@ Useful for provding quick searches accross code base directories, data sets, api
 <h3>Indexing</h3>
 
 The below steps outline how to index a directory for future searching: <br />
+Note Memory: The indexing process can be quite memory intensive. The basex.bat file, found in the Basex\bin directory can be edited to increase the memory allocated. <br />
 
 1) Ensure you have basex installed and in your path <br />
 2) Clone this repository to your machine <br />
