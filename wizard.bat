@@ -20,7 +20,7 @@ if %x% leq %pages% (
 
 start /b /wait basex -q "(db:optimize('%db%'))"
 echo Hunting Trigrams
-start /b /wait basex -q "import module namespace index = 'xq-hunt' at 'src/xq-hunt.xqm'; index:database('%db%')"
+start /b /wait basex -q "import module namespace index = 'hunt' at 'src/xq-hunt.xqm'; hunt:database('%db%')"
 start /b /wait basex -bdb="%db%" index-hunt-database.xq
 start /b /wait basex -q "(db:optimize('%db%'))"
 echo Hunting %source% into database %db% Complete!
