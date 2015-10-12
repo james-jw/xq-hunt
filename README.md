@@ -38,12 +38,10 @@ xq-hunt:hunt-db('demo-hunt', 'Hunting is fun!', 3)
 
 The above query would return all the index nodes matching the trigram vector of the input phrase.This does not gurrantee the phrase is in the file referenced by the index, only that it likley could be. <br />
 
-To return the actual lines containing the phrase. Call <code>hunt-file</code> pasing in the index provided from hunt-db call above, plus the phrase itself and lastly a windows size of 0. <br />
+To return the actual lines containing the phrase. Call <code>hunt-file</code> pasing in the index provided from hunt-db call above, plus the phrase itself and lastly a windows size of 1. <br />
 
-For example to return all lines from any index returned by hunt-db you could simply use the xquery map operator: <br />
-<code>xq-hunt:hunt-db('demo-hunt', $phrase, 3) ! xq-hunt:hunt-file(., $phrase, 0)</code> <br />
-
-<b>Note</b> the 0 in hunt-file. This simply returns a zero length window which represents the line by itself. <br />
+For example to return all lines from any index returned by hunt-db you could simply use the xquery map operator <code>!</code>: <br />
+<code>xq-hunt:hunt-db('demo-hunt', $phrase, 3) ! xq-hunt:hunt-file(., $phrase, 1)</code> <br />
 
 Fortunately, the <code>hunt-db</code> method has an overload which does this for you. Simply add the window size as the last paramter to <code>hunt-db</code> in order to return windowed results. The following query would return a set of windows of size 10 for each match in the directory. <br />
 
