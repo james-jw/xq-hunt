@@ -98,7 +98,7 @@ declare updating function index:database($dbname) {
 (: Provided a database name and search term returns a set of indexes matching the term
    This requires tri-grm indexes exist on the database.
 :)
-declare function index:search-db($db as xs:string, $term as xs:string, $size as xs:integer*) as node()* {
+declare function index:hunt($db as xs:string, $term as xs:string, $size as xs:integer*) as node()* {
   let $db := db:open($db)
   let $search := index:to-search-vector($term, $size)
   let $vector := 
@@ -139,7 +139,7 @@ declare function index:search-file($index as node(), $term as xs:string, $window
    into the database. This requires index:directory and index:database have been run on the provided database name
    and thus a trigram indexes already exists on the database. 
 :)
-declare function index:search-db($db-name as xs:string, $term as xs:string, $size as xs:integer*, $window-size as xs:integer) as node()* {
-  (index:search-db($db-name, $term, $size) ! index:search-file(., $term, $window-size))[position() = (1 to 5) ]
+declare function index:hunt($db-name as xs:string, $term as xs:string, $size as xs:integer*, $window-size as xs:integer) as node()* {
+  (index:hunt($db-name, $term, $size) ! index:search-file(., $term, $window-size))[position() = (1 to 5) ]
 };
 
