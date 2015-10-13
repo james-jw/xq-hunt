@@ -59,9 +59,6 @@ To return the actual lines containing the phrase. Call <code>hunt-file</code> pa
 <pre>let $indexes := xq-hunt:hunt-db('demo-hunt', $phrase, 3)
   for $index in $indexes return
     xq-hunt:hunt-file($index, $phrase, 1)</pre> <br />
-    
-For example to return all lines from any index returned by hunt-db you could simply use the xquery map operator <code>!</code>: <br />
-<code>xq-hunt:hunt-db('demo-hunt', $phrase, 3) ! xq-hunt:hunt-file(., $phrase, 1)</code> <br />
 
 Fortunately, the <code>hunt-db</code> method has an overload which does this for you. Simply add the window size as the last paramter to <code>hunt-db</code> in order to return windowed results. The following query would return a set of windows of size 10 for each match in the directory. <br />
 
