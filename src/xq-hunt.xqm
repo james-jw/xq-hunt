@@ -58,7 +58,7 @@ declare updating function index:directory($sourceIn as xs:string, $db as xs:stri
   let $indexes :=
     for $file in (
        for $f in file:list($sourceIn, true())
-       where not(matches($sourceIn || $file, $skip)) and not(file:is-dir($sourceIn || $file))
+       where not(matches($sourceIn || $f, $skip)) and not(file:is-dir($sourceIn || $f))
        return $f
     )[position() > ($page * 1000) and position() <= (($page + 1) * 1000)]
     return 
