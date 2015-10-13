@@ -56,9 +56,12 @@ declare updating function index:file($index as node(), $db as xs:string) {
    @param $page - since the operation is intensive, only 1000 recursive files will be process per execution and thus paging is required for any directory containing great than 1000 files recursively.:)
 declare updating function index:directory($sourceIn as xs:string, $db as xs:string, $skip as xs:string, $page as xs:integer, $sizes) {
   let $indexes :=
-    for $file in file:list($sourceIn, true())[position() > ($page * 1000) and position() <= (($page + 1) * 1000)]
-    where not(matches($sourceIn || $file, $skip)) and not(file:is-dir($sourceIn || $file))
-    return
+    for $file in (
+       for $f in file:list($sourceIn, true())
+       where not(matches($sourceIn || $file, $skip)) and not(file:is-dir($sourceIn || $file))
+       return $f
+    )[position() > ($page * 1000) and position() <= (($page + 1) * 1000)]
+    return 
       try {
         let $doc := index:lines-from-file(trace($sourceIn || $file)) return
         let $trigrams := index:to-hunt-vector($doc, $sizes) return
@@ -68,7 +71,6 @@ declare updating function index:directory($sourceIn as xs:string, $db as xs:stri
       } catch * {
         prof:void(trace('Failed ' || $err:description))
       }
-      
   return
    ($indexes ! index:file(., $db))
 };
