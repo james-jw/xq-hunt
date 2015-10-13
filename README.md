@@ -10,7 +10,7 @@ When a document is indexed, its contents are broken up into individual trigrams 
 
 After all documents have been indexed, a second process indexes the trigrams themselves, deteremining their relevancy. The formula is simply the total number of indexed documents divided by the number of documents the trigram occurs in. For example a relevancy of .5 would represent a trigram that is found in 50% of the documents indexed and thus is NOT very useful. The lower the number the more useful the trigram is. 
 
-When a search is performed, the same process is applied to the input search text. The resulting trigrams are then ordered by relevancy and top 4 relevant trigrams are matched against the document trigrams stored during the indexing process, matching any file index which contains them all. 
+When a search is performed, the same process is applied to the input search text. The resulting trigrams are then ordered by relevancy and the top 4 relevant trigrams are matched against the document trigrams stored during the indexing process, matching any file index which contains them all. 
 
 The file path returned from the index is then used to search line by line for the queried pattern. (Its important to note that when searching, the trigram length must be specified and match that of available indexes on the database being searched. For example, if you index using trigrams of size 4, you must also search with trigrams of size 4.)
 
@@ -56,7 +56,10 @@ xq-hunt:hunt-db('demo-hunt', 'Hunting is fun!', 3)
 The above query would return all the index nodes matching the trigram vector of the input phrase.This does not gurrantee the phrase is in the file referenced by the index, only that it likley could be. <br />
 
 To return the actual lines containing the phrase. Call <code>hunt-file</code> pasing in the index provided from hunt-db call above, plus the phrase itself and lastly a windows size of 1. <br />
-
+<pre>let $indexes := xq-hunt:hunt-db('demo-hunt', $phrase, 3)
+  for $index in $indexes return
+    xq-hunt:hunt-file($index, $phrase, 1)</pre> <br />
+    
 For example to return all lines from any index returned by hunt-db you could simply use the xquery map operator <code>!</code>: <br />
 <code>xq-hunt:hunt-db('demo-hunt', $phrase, 3) ! xq-hunt:hunt-file(., $phrase, 1)</code> <br />
 
