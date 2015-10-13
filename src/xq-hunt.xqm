@@ -5,7 +5,7 @@
 :)
 module namespace index = 'xq-hunt';
 
-declare function index:to-hunt-vector($terms as xs:string*, $sizes as xs:integer*) as xs:string* {
+declare function index:to-hunt-vector($terms as xs:string*, $sizes as xs:integer*, $skip as xs:string) as xs:string* {
   for $size in $sizes return
     distinct-values(
       for $term in $terms return
@@ -14,7 +14,11 @@ declare function index:to-hunt-vector($terms as xs:string*, $sizes as xs:integer
           end $e at $epos when $epos - $spos = $size - 1
           where count($w) = $size
           return lower-case(codepoints-to-string($w))
-    )[not(matches(., '\s|\W|^\d*$'))]
+    )[not(matches(., $skip))]
+};
+
+declare function index:to-hunt-vector($terms as xs:string*, $sizes as xs:integer*) {
+   index:to-hunt-vector($terms, $sizes, '\s|\W|^\d*$')
 };
 
 (: Provided a string term, returns a search vector consisting of trigrams :)
