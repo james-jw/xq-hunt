@@ -65,7 +65,8 @@ declare updating function index:directory($sourceIn as xs:string, $db as xs:stri
       try {
         let $doc := index:lines-from-file(trace($sourceIn || $file)) return
         let $trigrams := index:to-hunt-vector($doc, $sizes) return
-          <index path="{$sourceIn || $file}">
+          <index path="{$sourceIn || $file}" lines="{count($doc)}">
+            {distinct-values($doc ! tokenize(., '\W')) ! <word>{.}</word>}
             {$trigrams ! <trigram>{.}</trigram>}
           </index>
       } catch * {
