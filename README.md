@@ -1,5 +1,6 @@
 # xq-hunt
-Library for indexing directories of documents for quick windowed searching. Targets <a href="http://basex.org/">BaseX</a>
+XQuery Library for indexing text and providing sub second windowed searching accross millions of lines of text. <br />
+Targets <a href="http://basex.org/">BaseX</a>
 
 <h2>How it works</h2>
 Hunt is a simple module. It creates a trigram index for each text file found in the directory. When an index is created a trigram size can be selected. For clarification, a trigram in our case is <code>any group of consecutive written letters.</code>. 
@@ -17,6 +18,13 @@ The file path returned from the index is then used to search line by line for th
 <h3>Use Cases</h3>
 Useful for provding quick searches accross code base directories, data sets, apis or other data files.
 
+<h3>Performance</h3>
+On a standard desktop (core i5 | 6700 8 gigs of ram)
+Searching 18,000 files with 3.5 million combined lines of text
+
+Search times observered: 200 - 1100 ms <br />
+Averaging under 500ms
+ 
 <h2>Usage</h2>
 <h3>Indexing</h3>
 

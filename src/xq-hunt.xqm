@@ -18,7 +18,7 @@ declare function index:to-hunt-vector($terms as xs:string*, $sizes as xs:integer
 };
 
 declare function index:to-hunt-vector($terms as xs:string*, $sizes as xs:integer*) {
-   index:to-hunt-vector($terms, $sizes, '\s|\W|^\d*$')
+   index:to-hunt-vector($terms, $sizes, '\s|\W|[|<>=]c|^\d*$')
 };
 
 (: Provided a string term, returns a search vector consisting of trigrams :)
@@ -45,9 +45,9 @@ declare function index:lines-from-file($sourceIn as xs:string) as xs:string* {
 
 (: Adds the provided file index to the database :)
 declare updating function index:file($index as node(), $db as xs:string) {
-  let $fileName := tokenize($index/@file, '\\')[last()] return
-  if(exists(db:open($db, $fileName)/index[@file = $index/@file])) then (
-    replace node db:open($db, $fileName)/index[@file = $index/@file] with $index
+  let $fileName := tokenize($index/@path, '\\')[last()] return
+  if(exists(db:open($db, $fileName)/index[@path = $index/@path])) then (
+    replace node db:open($db, $fileName)/index[@path = $index/@path] with $index
   ) else (db:add($db, $index, $fileName)) 
 };
 
@@ -55,32 +55,34 @@ declare updating function index:file($index as node(), $db as xs:string) {
    @param $skip - regular expression used to skip file paths 
    @param $page - since the operation is intensive, only 1000 recursive files will be process per execution and thus paging is required for any directory containing great than 1000 files recursively.:)
 declare updating function index:directory($sourceIn as xs:string, $db as xs:string, $skip as xs:string, $page as xs:integer, $sizes) {
-  let $indexes :=
-    for $file in (
-       for $f in file:list($sourceIn, true())
-       where not(matches($sourceIn || $f, $skip)) and not(file:is-dir($sourceIn || $f))
-       return $f
-    )[position() > ($page * 1000) and position() <= (($page + 1) * 1000)]
-    return 
-      try {
-        let $doc := index:lines-from-file(trace($sourceIn || $file)) return
-        let $trigrams := index:to-hunt-vector($doc, $sizes) return
-          <index path="{$sourceIn || $file}" lines="{count($doc)}">
-            {distinct-values($doc ! tokenize(., '\W')) ! <word>{.}</word>}
-            {$trigrams ! <trigram>{.}</trigram>}
-          </index>
-      } catch * {
-        prof:void(trace('Failed ' || $err:description))
-      }
-  return
-   ($indexes ! index:file(., $db))
+  for $file in (
+      for $f in file:list($sourceIn, true())
+      where not(matches($sourceIn || $f, $skip)) and not(file:is-dir($sourceIn || $f))
+      return $f
+  )[position() > ($page * 1000) and position() <= (($page + 1) * 1000)]
+  return 
+    try {
+      let $doc := index:lines-from-file(trace($sourceIn || $file)) return
+      let $index := 
+         <index path="{$sourceIn || $file}" lines="{count($doc)}">
+            {index:to-hunt-vector($doc, $sizes) ! <trigram>{.}</trigram>}
+         </index>
+      return
+        (index:file($index, $db))
+    } catch * {
+      prof:void(trace('Failed ' || $err:description))
+    }
 };
 
 (: Indexes the rate of occurance of a trigram in the database for faster processing. :)
 declare updating function index:trigram($db, $trigram, $document-count) { 
   let $indexes := db:open($db, 'trigram-index')
   let $count := count($trigram) + 1
-  let $new-index := <relevance trigram="{trace($trigram[1])}">{$count div $document-count}</relevance>
+  let $new-index := 
+  <relevance trigram="{trace($trigram[1])}">
+    {if ($trigram[1]/@word) then attribute word {'true'} else ()}
+    {$count div $document-count}
+  </relevance>
   return
     (
      if(exists($indexes/relevance[@trigram = $trigram[1]])) 
@@ -94,8 +96,9 @@ declare updating function index:database($dbname) {
   let $db := db:open($dbname)
   let $all-count :=  count(distinct-values($db//index))
   let $trigrams := 
-    for $trigram in $db//index/trigram/text()
+    for $trigram in $db//index/trigram
     group by $value := $trigram[1]
+    order by count($trigram) ascending
     return array {$trigram}
   return
     for $trigram in $trigrams return
@@ -106,20 +109,18 @@ declare updating function index:database($dbname) {
    This requires trigram indexes exist on the database.
 :)
 declare function index:hunt-db($db as xs:string, $term as xs:string, $size as xs:integer*) as node()* {
-  let $db := db:open($db)
-  let $search := index:to-hunt-vector($term, $size)
+  let $search := (
+    $term => index:to-hunt-vector($size)
+  )
   let $vector := 
-   (for $v in $db/relevance[./@trigram = $search]
-    order by $v 
-    return $v)[position() < 5]/@trigram/data()
+   (for $v in db:open($db)/relevance[./@trigram = $search]
+      order by $v 
+      return $v
+   )[position() < 4]/@trigram/data()
    let $trigrams := if(count($vector) gt 0) then $vector else $search
-   return  
-     (
-      for $index in $db/index 
-      where every $tri in $trigrams 
-            satisfies $index/trigram = $tri
-      return $index
-     )
+   let $exp := 'db:open("' || $db || '")/index[' || string-join(($trigrams ! ('trigram = "' || . || '"')), ' and ') || ']' 
+    return
+      xquery:eval($exp)     
 };
 
 (: Provided an database index element, term and window size. Returns a set of text windows of the provided size

@@ -1,5 +1,5 @@
 import module namespace index = 'xq-hunt' at 'src/xq-hunt.xqm';
-declare variable $source external; 
+declare variable $source as xs:string external; 
 declare variable $db external; 
 declare variable $skip external;
 declare variable $page external;
