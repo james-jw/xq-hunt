@@ -1,5 +1,5 @@
 # xq-hunt
-XQuery Library for indexing text and providing sub second windowed searching accross millions of lines of text. <br />
+XQuery Library for indexing and providing sub second windowed searching accross millions of lines of text. <br />
 Targets <a href="http://basex.org/">BaseX</a>
 
 <h2>How it works</h2>
