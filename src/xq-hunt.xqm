@@ -131,15 +131,13 @@ declare function index:hunt-file($index as node(), $term as xs:string, $window-s
   let $lines := for tumbling window $w in $text
        start $s at $spos when lower-case($s) => contains(lower-case($term))
        end at $epos when $epos - $spos = $window-size
-       return <window>{$w ! <line>{.}</line>}</window>
+       return <window line="{$spos}">{$w ! <line>{.}</line>}</window>
   return
        if(not($lines)) then ()
        else (
-         <index id="{db:node-id($index)}">
-            <text path="{$index[1]/@path}" id="{db:node-id($index[1])}">{
-               $lines
-            }</text>
-         </index>
+         <text path="{$index/@path}" id="{db:node-id($index)}">{
+            $lines
+         }</text>
        )
 };
 
