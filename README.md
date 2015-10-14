@@ -3,9 +3,9 @@ XQuery Library for indexing text and providing sub second windowed searching acc
 Targets <a href="http://basex.org/">BaseX</a>
 
 <h2>How it works</h2>
-Hunt is a simple module. It creates a trigram index for each text file found in the directory. When an index is created a trigram size can be selected. For clarification, a trigram in our case is <code>any group of consecutive written letters.</code>. 
+Hunt uses trigram indexes to query accross millions of lines of text. Trigrams indexes can be of various sizes as specified during their creation and against different sets of text. A trigram is any <code>group of consecutive written letters.</code>. 
 
-Different trigram lengths are useful for different data sets. The examples here us a trigram length of size 3; however, any positive length is valid including multiple lengths: (3, 7).
+Different trigram lengths are useful for different data sets. The examples shown here use a trigram length of size 3; however, any positive length is valid including multiple lengths: (3, 7).
 
 When a document is indexed, its contents are broken up into individual trigrams of the length provided and each unique trigram found is stored in the documents index.
 
@@ -19,10 +19,10 @@ The file path returned from the index is then used to search line by line for th
 Useful for provding quick searches accross code base directories, data sets, apis or other data files.
 
 <h3>Performance</h3>
-On a standard desktop (core i5 | 6700 8 gigs of ram)
+On a standard desktop (core i5 | 6700,, 8 gigs of ram)
 Searching 18,000 files with 3.5 million combined lines of text
 
-Search times observered: 200 - 1100 ms <br />
+Windowed search times: 200 - 1100 ms <br />
 Averaging under 500ms
  
 <h2>Usage</h2>
