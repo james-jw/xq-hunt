@@ -9,7 +9,7 @@ set /p skip="Enter the skip expression: "
 set /p pages="Enter how many pages it will take: "
 set /p sizes="Enter trigram sizes, seperated by commas: "
 cls
-start /b /wait basex -q "(db:create('%db%'), db:output('Created Hunt database %db% succesfully!'))"
+start /b /wait basex -q "if(db:list() = '%db%') then () else (db:create('%db%'), db:output('Created Hunt database %db% succesfully!'))"
 :while1
 if %x% leq %pages% (
     start /b /wait basex -bsource=%source% -bdb="%db%" -bskip=%skip% -bpage=%x% -bsizes="%sizes%" hunt-directory.xq
