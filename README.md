@@ -2,7 +2,15 @@
 XQuery Library for indexing and providing sub second windowed searching accross millions of lines of text. <br />
 Targets <a href="http://basex.org/">BaseX</a>
 
-<h2>How it works</h2>
+<h3>Dependencies</h3>
+<pre>
+git@github.com:james-jw/xq-tika
+</pre>
+
+<h6>Installing Dependencies</h6>
+Clone this repository and all dependencies into the same folder
+
+<h3>How it works </h3>
 Hunt uses trigram indexes to query accross millions of lines of text. Trigrams indexes can be of various sizes as specified during their creation and against different sets of text. A trigram is any <code>group of consecutive written letters.</code>. 
 
 Different trigram lengths are useful for different data sets. The examples shown here use a trigram length of size 3; however, any positive length is valid including multiple lengths: (3, 7).
@@ -25,7 +33,7 @@ Searching 18,000 files with 3.5 million combined lines of text
 Windowed search times: 200 - 1100 ms <br />
 Averaging under 500ms
  
-<h2>Usage</h2>
+<h3>Usage</h3>
 <h3>Indexing</h3>
 
 The below steps outline how to index a directory for future searching: <br />

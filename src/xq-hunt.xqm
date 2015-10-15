@@ -4,6 +4,7 @@
    @date 10/10/2015   
 :)
 module namespace index = 'xq-hunt';
+import module namespace tika = 'xq-tika' at '../../xq-tika/src/xq-tika.xqm';
 
 declare function index:to-hunt-vector($terms as xs:string*, $sizes as xs:integer*, $skip as xs:string) as xs:string* {
   for $size in $sizes return
@@ -36,11 +37,8 @@ declare function index:escape-for-regex($terms as xs:string*) as xs:string* {
 (: Encoding agnostic way to read text-files 
    Supports: UTF, UTF-8, and ISO08859-1 
 :)
-declare function index:lines-from-file($sourceIn as xs:string) as xs:string* {
-    try { file:read-text-lines($sourceIn) } 
-    catch * {
-       file:read-text-lines($sourceIn, 'ISO-8859-1')
-    }
+declare function index:lines-from-file($pathIn as xs:string) as xs:string* {
+   tika:parse-lines($pathIn)
 };
 
 (: Adds the provided file index to the database :)
